@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styleguide</title>
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
+    <link rel="stylesheet" type="text/css" href="css/markdown.css">
+    <script src="js/showdown.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan:400,700" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <div class="header-title">
+                Guidelines 
+            </div>
+            <div class="header-subtitle">
+                für das emotionale und motivationale Design im E-Learning           
+            </div> 
+        </header>
+        <div class="contentWrapper">
+            <div class="margin-content">
+                <div class="content markdown-body" id="markdown-content">
+                
+                    <script>
+                        (async function getImage () {
+                            const {value: file} = await swal({
+                            title: 'Wähle die Markdown Datei aus',
+                            input: 'file',
+                            inputAttributes: {
+                                'accept': '.md', 
+                                'aria-label': 'test'
+                            }
+                            })
+    
+                            if (file) {
+                            const reader = new FileReader
+                            reader.onload = (e) => {
+                                
+                                console.log(reader.result)
+                                //var converter = new showdown.Converter(),
+                                var converter = new showdown.Converter({tables: true, strikethrough: true}),
+                                markDownText      = reader.result,
+                                html      = converter.makeHtml(markDownText);
+                                document.getElementById("markdown-content").innerHTML = html;
+                                loadIndex();
+                            }
+                            reader.readAsText(file)
+                            }
+                            })()
+                    </script>
+                </div>
+            </div>  
+        </div>
+              <aside>
+                <div class="nav-title">
+                  Inhaltsverzeichnis
+                </div>
+                <div  class="toc" id="tableOfContent">
+                    <ul id="table-of-contents">
+
+                    </ul>
+                </div>
+    </body>
+    <script>
+    
+    function loadIndex(){
+        $("h2, h3").each(function(index, element) {                                                     
+    
+    //insert an anchor to jump to, from the TOC link.            
+    var anchor = "<a name='" + index + "'></a>";                 
+    $(this).before(anchor);                                     
+    
+    var li     = "<li><a href='#" + index + "'>" + $(this).text() + "</a></li>"; 
+    
+    if( $(this).is("h2") ){                                     
+            prevH2List = $("<ul></ul>");                
+            prevH2Item = $(li);                                     
+            prevH2Item.append(prevH2List);                          
+            prevH2Item.appendTo("#table-of-contents");                        
+        } else {                                                    
+            prevH2List.append(li);                                  
+        }                                                           
+            index++;                                                    
+            });                           
+    }
+
+
+
+    
+    var outerHeadliensTop = []
+    $( ".contentWrapper" ).scroll(function() {
+        outerHeadliensTop = [];
+        var currentScroll = $(".margin-content").position();
+        console.log(currentScroll.top);
+
+        var headlines = $("h1, h2, h3, h4, h5, h6");
+        console.log(headlines);
+        headlines.each(function( index ){
+            var tempPos = $(this).position()
+
+            var contentHeight = $(".contentWrapper")[0].clientHeight;
+            if(tempPos.top < 150){
+                outerHeadliensTop.push($(this))
+            }
+            
+            if (index === (outerHeadliensTop.length - 1)) {
+                //console.log('Last field, submit form here');
+                
+                var list = $("#tableOfContent").find("a");
+                console.log(list);
+                list.each(function(){
+                    $(this).css('color', '#393E42');
+                });
+                var currentColor = $(this).find('span').css("color");
+                var menuItem = $('a[href="#' + $(this).prev().attr('name') + '"]');
+                menuItem.css('color', '#3399cc');
+            }
+
+            
+
+            
+        });
+
+    });
+
+    
+ // is in viewport 
+
+ 
+
+    
+    
+    </script>
+</html>
+  
+  
+  
+  
+  
