@@ -14,10 +14,6 @@ body{
   header{
     width:100vw;
     height: 6em;
-    background-image:url(icon1.png);
-    background-size: 250px;
-    background-repeat:no-repeat;
-    background-position:left;
     background-color:#24292e;
   }
   
